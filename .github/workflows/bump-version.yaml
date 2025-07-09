@@ -23,7 +23,7 @@ jobs:
           NEW_VERSION: ${{ github.event.inputs.version }}
       - uses: EndBug/add-and-commit@v9.1.4
         with:
-          message: ${{ format('Update version.txt to {0}', github.event.inputs.version }}
+          message: ${{ format('Update version.txt to {0}', github.event.inputs.version) }}
           add: ${{ format('["{0}/version.txt"]', github.workspace) }}
           cwd: "."
           pull: "--ff"
