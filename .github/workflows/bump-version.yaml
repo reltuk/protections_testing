@@ -1,0 +1,31 @@
+name: Bump version.txt
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'SemVer format release tag, i.e. 0.24.5'
+        required: true
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-22.04
+    name: Bump version.txt
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.REPO_TOKEN }}
+      - name: Write it
+        run: echo "$NEW_VERSION" > "$FILE"
+        env:
+          FILE: ${{ format('{0}/version.txt', github.workspace) }}
+          NEW_VERSION: ${{ github.event.inputs.version }}
+      - uses: EndBug/add-and-commit@v9.1.4
+        with:
+          message: ${{ format('Update version.txt to {0}', github.event.inputs.version }}
+          add: ${{ format('["{0}/version.txt"]', github.workspace) }}
+          cwd: "."
+          pull: "--ff"
+ 
+
